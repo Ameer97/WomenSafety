@@ -1,0 +1,172 @@
+﻿@{
+    ViewData["Title"] = "GetThisMap";
+}
+
+@section Head{
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" />
+
+}
+
+<style>
+    #map {
+        width: 100%;
+        height: 490px;
+    }
+
+    .img {
+        max-width: 100%;
+        max-height: 100%;
+        height: auto;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-7">
+            <div style="cursor: pointer;" id="map"></div>
+        </div>
+
+        <div class="col-5">
+            <h3>Click to Get Nerest Employee</h3>
+        </div>
+
+
+    </div>
+
+    <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:400px" role="document">
+            <style>
+                .card {
+                    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+                    max-width: 300px;
+                    margin: auto;
+                    text-align: center;
+                }
+
+                .title {
+                    color: grey;
+                    font-size: 18px;
+                }
+
+                button {
+                    border: none;
+                    outline: 0;
+                    display: inline-block;
+                    padding: 8px;
+                    color: white;
+                    background-color: #000;
+                    text-align: center;
+                    cursor: pointer;
+                    width: 100%;
+                    font-size: 18px;
+                }
+
+                a {
+                    text-decoration: none;
+                    font-size: 22px;
+                    color: black;
+                }
+
+                    button:hover, a:hover {
+                        opacity: 0.7;
+                    }
+            </style>
+            <div class="modal-content" style="background-color:#e8e8e8">
+                <!-- Add icon library -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+                <div class="card">
+                    <img id="modalImage" src="https://www.w3schools.com/w3images/team2.jpg" alt="John" style="width:100%">
+                    <h1 id="modalName">John Doe</h1>
+                    <p class="title" id="modalTitle">Role: IT</p>
+                    <p id="modalNote">Harvard University</p>
+                    <div class="container-fluid">
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <a href="#"><i class="fa fa-dribbble"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <p><button>Contact</button></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
+    <script>
+        var map = L.map('map', {
+            zoomControl: true, maxZoom: 28, minZoom: 1
+        }).fitBounds([[29.799992708954807, 37.797432216381964], [36.99103453750632, 49.97967038565338]]);
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+
+        map.on('click', function (ev) {
+            setPoint(ev);
+        });
+
+
+
+        function openMap(e, branch) {
+            var win = window.open('/Branches/Details/' + branch.id, '_blank');
+            win.focus();
+        }
+
+        function openModal(employee) {
+            console.log(employee);
+            var img = document.getElementById("modalImage");
+            img.src = employee.pictureLink;
+
+            var name = document.getElementById("modalName");
+            name.textContent = employee.name;
+
+            var note = document.getElementById("modalNote");
+            note.textContent = employee.note;
+
+            $("#detailsModal").modal()
+        }
+
+
+        function getPoints(lat,lan,number){
+
+            axios.get('/Home/GetNerstLocations?lat=' + lat + '&lan=' + lan + '&number=' + 1).then(response => {
+                var employees = response.data;
+
+                for (const employee of employees) {
+                    L.marker([
+                        employee.lat,
+                        employee.lan
+                    ])
+                        .bindPopup(employee.name)
+                        .on('mouseover', function (e) {
+                            this.openPopup()
+                        })
+                        .on('mouseout', function (e) {
+                            this.closePopup()
+                        })
+                        .on('click', function (e) {
+                            //openMap(e, branch);
+                            openModal(employee)
+                        })
+                        .addTo(map);
+                }
+
+            });
+
+        }
+
+        function setPoint(ev) {
+            getPoints(ev.latlng.lat, ev.latlng.lng, 3);
+        }
+    </script>
+}
