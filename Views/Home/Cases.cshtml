@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@ViewData["Title"]</h1>
+<div id="category">
+
+    <div class="form-group">
+        <label class="control-label">Age of ATTACKERS:</label>
+        <select id="selectId" class="form-control js-example-basic-multiple">
+            <option v-for="offer in select2" :value="offer.id">{{ offer.id }}</option>
+        </select>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    @*<style>
+        .img {
+            width: 80%;
+            margin-left: 90px;
+        }
+    </style>
+    <img class="img" src="/pictures/circle.jpg"/>*@
+    <h1 class="centered" style="font-size: 62px;">{{ count }}</h1>
+
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+    <script>
+        var vue = new Vue({
+            el: "#category",
+            data: {
+                select2: [],
+                count: 0
+            },
+            methods: {
+                getOffers() {
+                    axios.get('/Home/getcases').then(response => {
+                        this.select2 = response.data;
+                        var self = this;
+
+                        $(document).ready(function () {
+                            $('.js-example-basic-multiple').select2().on('change', function (e) {
+                                var f = $('#selectId').select2('data')[0];
+                                self.count = self.select2.find(s => s.id == f.id).count;
+                            });
+                        });
+
+                    }).catch(error => {
+                        console.log(error);
+                    });
+                },
+            },
+            mounted() {
+                this.getOffers();
+               
+            }
+        })
+
+    </script>
+}

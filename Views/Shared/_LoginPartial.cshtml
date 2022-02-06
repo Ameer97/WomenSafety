@@ -24,3 +24,34 @@ else
     </li>
 }
 </ul>
+
+<ul class="navbar-nav flex-grow-1">
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </li>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Points" asp-action="Index">Points</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Types" asp-action="Index">Types</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="GetThisMapBestDistance">Office</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" title="violence against women during COVID-19" href="https://data.unwomen.org/publications/vaw-rga">VAW in CVID-19</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" title="violence against women during COVID-19" href="/pictures/1_in_6_Women 122016.png">womens</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" title="violence against women during COVID-19" href="/pictures/statistics.png">statistics</a>
+        </li>
+    }
+
+</ul>
