@@ -73,6 +73,14 @@ namespace WomenSafety.Controllers
         {
             return View();
         }
+        public IActionResult Womens()
+        {
+            return View();
+        }
+        public IActionResult Statistics()
+        {
+            return View();
+        }
 
         public async Task<IActionResult> GetCases()
         {
