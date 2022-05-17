@@ -28,36 +28,37 @@
 
     <ul class="navbar-nav flex-grow-1">
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <div class="dropdown">
+                <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                <a class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Womens">Womens</a>
+                </div>
+            </div>
         </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </li>
+
         @if (SignInManager.IsSignedIn(User))
         {
 
             if (User.IsInRole(SystemRoles.Admin))
             {
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Points" asp-action="Index">Points</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Types" asp-action="Index">Types</a>
-                </li>
+
+                <div class="dropdown">
+                <a class="text-dark" asp-area="" asp-controller="Home" asp-action="GetThisMapBestDistance">Office</a>
+                    <button class="btn dropdown-toggle" type="button" id="ddropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Police Station
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="ddropdownMenuButton">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Statistics">Statistics</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Points" asp-action="Index">Points</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Types" asp-action="Index">Types</a>
+                    </div>
+                </div>
+
             }
 
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="GetThisMapBestDistance">Office</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Womens">Womens</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Statistics">Statistics</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" title="violence against women during COVID-19" href="https://data.unwomen.org/publications/vaw-rga">VAW in CVID-19</a>
-            </li>
         }
 
     </ul>
