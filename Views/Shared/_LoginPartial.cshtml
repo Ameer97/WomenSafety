@@ -42,22 +42,25 @@
         @if (SignInManager.IsSignedIn(User))
         {
 
-            if (User.IsInRole(SystemRoles.Admin))
-            {
-
+            <li class="nav-item">
                 <div class="dropdown">
-                <a class="text-dark" asp-area="" asp-controller="Home" asp-action="GetThisMapBestDistance">Office</a>
+                    <a class="text-dark" asp-area="" asp-controller="Home" asp-action="GetThisMapBestDistance">Office</a>
                     <button class="btn dropdown-toggle" type="button" id="ddropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Police Station
                     </button>
                     <div class="dropdown-menu" aria-labelledby="ddropdownMenuButton">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Statistics">Statistics</a>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Points" asp-action="Index">Points</a>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Types" asp-action="Index">Types</a>
+
+                        @if (User.IsInRole(SystemRoles.Admin))
+                        {
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Points" asp-action="Index">Points</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Types" asp-action="Index">Types</a>
+
+                        }
+
                     </div>
                 </div>
-
-            }
+            </li>
 
         }
 
